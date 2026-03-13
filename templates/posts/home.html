@@ -2,49 +2,77 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-<div style="margin-bottom:20px;padding:15px;border-bottom:1px solid #ddd;">
-    <form method="POST">
-        {% csrf_token %}
-        <textarea name="content"
-        placeholder="What's happening?"
-        required
-        style="width:100%;height:70px;padding:10px;border-radius:8px;border:1px solid #ccc;resize:none;"></textarea>
+<div style="max-width:600px;margin:auto;font-family:Arial,Helvetica,sans-serif;">
 
-        <button type="submit"
-        style="margin-top:8px;padding:6px 14px;background:#1da1f2;color:white;border:none;border-radius:6px;cursor:pointer;">
-        Post
-        </button>
-    </form>
+{% if user.is_authenticated %}
+
+<div style="background:white;border-radius:10px;padding:15px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+
+<form method="POST">
+{% csrf_token %}
+
+<textarea name="content"
+placeholder="What's happening?"
+required
+style="width:100%;height:80px;padding:12px;border-radius:8px;border:1px solid #ddd;font-size:14px;resize:none;"></textarea>
+
+<div style="text-align:right;margin-top:10px;">
+<button type="submit"
+style="background:#1da1f2;color:white;border:none;padding:8px 18px;border-radius:20px;font-size:14px;cursor:pointer;">
+Post
+</button>
 </div>
+
+</form>
+
+</div>
+
 {% else %}
-<p>Please <a href="/users/login/">login</a> to create a post.</p>
+
+<div style="background:white;padding:15px;border-radius:10px;margin-bottom:20px;">
+Please <a href="/users/login/">login</a> to post.
+</div>
+
 {% endif %}
 
 
-<div>
 
 {% for post in posts %}
 
-<div style="border-bottom:1px solid #ddd;padding:12px 10px;">
+<div style="background:white;border-radius:10px;padding:15px;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
 
-    <div style="font-weight:bold;margin-bottom:5px;">
-        @{{ post.author.username }}
-    </div>
+<div style="display:flex;align-items:center;margin-bottom:8px;">
 
-    <p style="margin:6px 0;">{{ post.content }}</p>
+<div style="width:40px;height:40px;border-radius:50%;background:#1da1f2;color:white;display:flex;align-items:center;justify-content:center;font-weight:bold;margin-right:10px;">
+{{ post.author.username|slice:":1"|upper }}
+</div>
 
-    <div style="margin-top:5px;">
-        <a href="{% url 'like' post.id %}" style="text-decoration:none;color:#e0245e;">
-            ❤️ {{ post.total_likes }}
-        </a>
-    </div>
+<div style="font-weight:bold;color:#333;">
+@{{ post.author.username }}
+</div>
+
+</div>
+
+<p style="font-size:15px;color:#444;margin:10px 0;">
+{{ post.content }}
+</p>
+
+<div style="margin-top:10px;">
+
+<a href="/like/{{post.id}}/"
+style="text-decoration:none;color:#e0245e;font-size:15px;">
+❤️ {{ post.total_likes }}
+</a>
+
+</div>
 
 </div>
 
 {% empty %}
 
-<p>No posts yet. Be the first to post!</p>
+<div style="text-align:center;color:#777;padding:30px;">
+No posts yet. Be the first to post!
+</div>
 
 {% endfor %}
 
