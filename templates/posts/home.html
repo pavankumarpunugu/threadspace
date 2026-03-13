@@ -1,0 +1,26 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<form method="post">
+{% csrf_token %}
+<textarea name="content" placeholder="What's happening?" required></textarea>
+<button type="submit">Post</button>
+</form>
+{% endif %}
+
+{% for post in posts %}
+
+<div class="post">
+<b>{{post.author.username}}</b>
+<p>{{post.content}}</p>
+
+<a href="/like/{{post.id}}/">❤️ {{post.total_likes}}</a>
+
+</div>
+
+{% endfor %}
+
+{% endblock %}
