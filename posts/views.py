@@ -18,3 +18,4 @@ def like_post(request,id):
     else:
         post.likes.add(request.user)
     return redirect("/")
+posts = Post.objects.all().order_by("-id")
